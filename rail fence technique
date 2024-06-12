@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+// Function to calculate (base^exp) % mod
+unsigned long long mod_exp(unsigned long long base, unsigned long long exp, unsigned long long mod) {
+    unsigned long long result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) { // If exp is odd
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;
+        exp = exp / 2;
+    }
+    return result;
+}
+
+// Function to encrypt the message using RSA
+unsigned long long rsa_encrypt(unsigned long long message, unsigned long long e, unsigned long long n) {
+    return mod_exp(message, e, n);
+}
+
+int main() {
+    // Public key components (for this example, these are small numbers for simplicity)
+    unsigned long long e = 17;  // Public exponent
+    unsigned long long n = 3233; // Modulus (should be a large number in real cases)
+
+    // Message to encrypt (should be less than n)
+    unsigned long long message;
+    printf("Enter the message to encrypt (as an integer): ");
+    scanf("%llu", &message);
+
+    // Encrypt the message
+    unsigned long long encrypted_message = rsa_encrypt(message, e, n);
+    printf("Encrypted message: %llu\n", encrypted_message);
+
+    return 0;
+}
